@@ -31,7 +31,16 @@ BitField.prototype.set = function(i, b){
 		this.buffer[i >> 3] &= ~(128 >> (i % 8));
 	}
 
-	if (this.persist) fs.writeFile(this.persist, this.buffer, function(err) { 
+	var self = this;
+	if (this.persist) { 
+		if (persistTimeout) clearTimeout(persistTimeout); 
+		persistTimeout = setTimeout(function() { self.persist() }, 100);
+	} 
+};
+
+var persistTimeout;
+BitField.prototype.persist = function() {
+	fs.writeFile(this.persist, this.buffer, function(err) { 
 		if (err) console.error(err) 
 	});
 };
