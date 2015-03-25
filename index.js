@@ -34,12 +34,12 @@ BitField.prototype.set = function(i, b){
 	var self = this;
 	if (this.persist) { 
 		if (persistTimeout) clearTimeout(persistTimeout); 
-		persistTimeout = setTimeout(function() { self.persist() }, 100);
+		persistTimeout = setTimeout(function() { self.persistState() }, 100);
 	} 
 };
 
 var persistTimeout;
-BitField.prototype.persist = function() {
+BitField.prototype.persistState = function() {
 	fs.writeFile(this.persist, this.buffer, function(err) { 
 		if (err) console.error(err) 
 	});
